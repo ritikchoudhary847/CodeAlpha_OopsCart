@@ -1,4 +1,4 @@
-# OopsCart — Modern Django E-Commerce Platform
+﻿# OopsCart â€” Modern Django E-Commerce Platform
 
 OopsCart is a full-stack e-commerce web application built with Django, Python, HTML, CSS and JavaScript. It provides a complete shopping workflow, including product discovery, user authentication, shopping cart management and order placement.
 
@@ -60,21 +60,21 @@ OopsCart is a full-stack e-commerce web application built with Django, Python, H
 
 ```text
 OopsCart/
-│
-├── accounts/          # Authentication and user profiles
-├── cart/              # Shopping cart functionality
-├── config/            # Django project configuration
-├── media/             # User-uploaded media (not committed)
-├── orders/            # Checkout and order management
-├── static/            # CSS, JavaScript and static assets
-├── store/             # Products, categories and catalogue
-├── templates/         # Django HTML templates
-│
-├── .env.example       # Environment variable reference
-├── .gitignore
-├── manage.py
-├── requirements.txt
-└── README.md
+â”‚
+â”œâ”€â”€ accounts/          # Authentication and user profiles
+â”œâ”€â”€ cart/              # Shopping cart functionality
+â”œâ”€â”€ config/            # Django project configuration
+â”œâ”€â”€ media/             # User-uploaded media (not committed)
+â”œâ”€â”€ orders/            # Checkout and order management
+â”œâ”€â”€ static/            # CSS, JavaScript and static assets
+â”œâ”€â”€ store/             # Products, categories and catalogue
+â”œâ”€â”€ templates/         # Django HTML templates
+â”‚
+â”œâ”€â”€ .env.example       # Environment variable reference
+â”œâ”€â”€ .gitignore
+â”œâ”€â”€ manage.py
+â”œâ”€â”€ requirements.txt
+â””â”€â”€ README.md
 ```
 
 ## Installation and Setup
@@ -82,7 +82,7 @@ OopsCart/
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/ritikchoudhary847/CodeAlpha_OopsCart.git
 cd OopsCart
 ```
 
@@ -192,4 +192,5 @@ Developed as part of the CodeAlpha Full Stack Development Internship.
 
 ---
 
-*OopsCart — A complete shopping experience built with Django.*
+*OopsCart â€” A complete shopping experience built with Django.*
+
