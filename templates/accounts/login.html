@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Login — OopsCart{% endblock %}
+
+{% block content %}
+<section class="account-section">
+    <div class="account-card">
+        <span class="section-kicker">GOOD TO SEE YOU AGAIN</span>
+        <h1>Welcome <span>back.</span></h1>
+        <p class="account-subtitle">
+            Your cart might be missing you.
+        </p>
+
+        <form method="POST" class="account-form">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+
+                    {% for error in field.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+                <div class="form-error">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <button type="submit" class="primary-button account-submit">
+                Log In →
+            </button>
+        </form>
+
+        <p class="account-switch">
+            New around here?
+            <a href="{% url 'accounts:register' %}">Create an account</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

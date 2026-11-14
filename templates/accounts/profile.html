@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile — OopsCart{% endblock %}
+
+{% block content %}
+<section class="account-section">
+    <div class="account-card profile-card">
+        <span class="section-kicker">YOUR CORNER OF OOPSCART</span>
+        <h1>My <span>profile.</span></h1>
+
+        {% if user.avatar %}
+            <img class="profile-avatar" src="{{ user.avatar.url }}"
+                 alt="Profile picture">
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data"
+              class="account-form">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+
+                    {% for error in field.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="primary-button account-submit">
+                Save Changes →
+            </button>
+        </form>
+
+        <a class="account-switch" href="{% url 'cart:detail' %}">
+            View my cart
+        </a>
+    </div>
+</section>
+{% endblock %}

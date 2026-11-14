@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}OopsCart — Buy Things. Regret Later.{% endblock %}
+
+{% block content %}
+
+<section class="hero-section">
+
+    <div class="hero-content">
+        <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            THE INTERNET'S MOST QUESTIONABLE STORE
+        </div>
+
+        <h1>
+            You don't need it.<br>
+            <span class="hero-accent">You want it.</span>
+        </h1>
+
+        <p class="hero-description">
+            Ridiculously fun products for unnecessarily complicated lives.
+            Go ahead. Make another questionable decision.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#shop" class="primary-button">
+                Shop the chaos <span>↗</span>
+            </a>
+            <span class="hero-note">Your future self says hi.</span>
+        </div>
+
+        <div class="hero-stats">
+            <div>
+                <strong>100%</strong>
+                <span>Unnecessary fun</span>
+            </div>
+            <div class="stats-divider"></div>
+            <div>
+                <strong>0%</strong>
+                <span>Regret guarantee*</span>
+            </div>
+        </div>
+
+        <p class="disclaimer">*We make no promises about your bank balance.</p>
+    </div>
+
+    <div class="hero-visual">
+        <div class="hero-orbit orbit-one"></div>
+        <div class="hero-orbit orbit-two"></div>
+
+        <div class="hero-sticker sticker-top">TOTALLY<br>UNNECESSARY</div>
+
+        <div class="hero-product-card">
+            <div class="hero-product-top">
+                <span>THE DAILY ESSENTIAL</span>
+                <span class="hero-product-icon">✳</span>
+            </div>
+
+            <div class="hero-emoji">🛍️</div>
+
+            <div class="hero-product-bottom">
+                <span>Impulse Shopping</span>
+                <span class="hero-product-arrow">↗</span>
+            </div>
+        </div>
+
+        <div class="hero-sticker sticker-bottom">BUY NOW.<br>THINK LATER.</div>
+        <div class="floating-star star-one">✳</div>
+        <div class="floating-star star-two">✦</div>
+    </div>
+
+</section>
+
+
+<section class="trust-strip">
+    <span>✳ GOOD VIBES ONLY</span>
+    <span>✳ PRODUCTS WITH PERSONALITY</span>
+    <span>✳ YOUR WALLET'S WORST ENEMY</span>
+    <span>✳ SERIOUSLY FUN SHOPPING</span>
+</section>
+
+
+<section class="shop-section" id="shop">
+
+    <div class="section-heading">
+        <div>
+            <div class="section-kicker">THE GOOD STUFF</div>
+            <h2>Browse the <span>nonsense.</span></h2>
+            <p>Warning: You might actually find something useful.</p>
+        </div>
+    </div>
+
+
+    <div class="category-list">
+        <a href="{% url 'store:home' %}"
+           class="category-chip {% if not selected_category %}active{% endif %}">
+            Everything
+        </a>
+
+        {% for category in categories %}
+            <a href="{% url 'store:home' %}?category={{ category.slug }}#shop"
+               class="category-chip {% if selected_category.id == category.id %}active{% endif %}">
+                {{ category.name }}
+            </a>
+        {% endfor %}
+    </div>
+
+
+    {% if featured_products and not search_query and not selected_category %}
+    <section class="featured-section">
+
+        <div class="featured-heading">
+            <div>
+                <span class="section-kicker">HAND-PICKED CHAOS</span>
+                <h3>Staff favourites <span>✳</span></h3>
+            </div>
+            <span class="featured-label">FEATURED COLLECTION</span>
+        </div>
+
+        <div class="product-grid featured-grid">
+            {% for product in featured_products %}
+                {% include "store/partials/product_card.html" %}
+            {% endfor %}
+        </div>
+
+    </section>
+    {% endif %}
+
+
+    <div class="catalogue-toolbar">
+
+        <div>
+            <h3>All the goodies</h3>
+            <span class="result-count">
+                {{ product_count }} product{{ product_count|pluralize }} found
+            </span>
+        </div>
+
+        <div class="catalogue-controls">
+
+            <form method="get" action="{% url 'store:home' %}" class="search-form">
+
+                {% if selected_category %}
+                    <input type="hidden" name="category" value="{{ selected_category.slug }}">
+                {% endif %}
+
+                <input type="search" name="q"
+                       placeholder="Search for nonsense..."
+                       value="{{ search_query }}"
+                       aria-label="Search products">
+
+                <button type="submit" aria-label="Search">⌕</button>
+            </form>
+
+            <form method="get" action="{% url 'store:home' %}" class="sort-form">
+
+                {% if search_query %}
+                    <input type="hidden" name="q" value="{{ search_query }}">
+                {% endif %}
+
+                {% if selected_category %}
+                    <input type="hidden" name="category" value="{{ selected_category.slug }}">
+                {% endif %}
+
+                <select name="sort" id="sortSelect" aria-label="Sort products">
+                    <option value="newest" {% if sort_by == "newest" %}selected{% endif %}>Newest</option>
+                    <option value="price_low" {% if sort_by == "price_low" %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_high" {% if sort_by == "price_high" %}selected{% endif %}>Price: High to Low</option>
+                    <option value="name" {% if sort_by == "name" %}selected{% endif %}>Name</option>
+                </select>
+            </form>
+
+        </div>
+
+    </div>
+
+
+    {% if products %}
+
+        <div class="product-grid">
+
+            {% for product in products %}
+                {% include "store/partials/product_card.html" %}
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <div class="empty-icon">🛸</div>
+            <h3>Well, this is awkward.</h3>
+            <p>
+                {% if search_query %}
+                    Nothing matched "{{ search_query }}".
+                    Even our search engine is confused.
+                {% else %}
+                    No products here yet. The chaos is still loading.
+                {% endif %}
+            </p>
+            <a href="{% url 'store:home' %}" class="primary-button">
+                Reset the nonsense ↗
+            </a>
+        </div>
+
+    {% endif %}
+
+</section>
+
+
+<section class="bottom-banner">
+    <div>
+        <span class="section-kicker">A FRIENDLY REMINDER</span>
+        <h2>Life's too short for<br><span>boring shopping.</span></h2>
+        <p>Make your next purchase a little more interesting.</p>
+    </div>
+
+    <a href="#shop" class="banner-button">Find your nonsense ↗</a>
+</section>
+
+{% endblock %}

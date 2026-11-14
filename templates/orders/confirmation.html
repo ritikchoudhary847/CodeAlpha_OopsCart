@@ -1,0 +1,61 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<section class="order-confirmation-page">
+    <div class="confirmation-card">
+        <div class="confirmation-icon">✓</div>
+
+        <span class="confirmation-eyebrow">IT'S OFFICIAL</span>
+        <h1>Your order is in.</h1>
+
+        <p>
+            Thanks for making another questionable decision.
+            We'll take it from here.
+        </p>
+
+        <div class="confirmation-order-number">
+            <span>ORDER NUMBER</span>
+            <strong>{{ order.order_number }}</strong>
+        </div>
+
+        <div class="confirmation-details">
+            <div>
+                <span>Order total</span>
+                <strong>₹{{ order.total|floatformat:2 }}</strong>
+            </div>
+
+            <div>
+                <span>Payment</span>
+                <strong>Cash on Delivery</strong>
+            </div>
+
+            <div>
+                <span>Order status</span>
+                <strong>{{ order.get_status_display }}</strong>
+            </div>
+        </div>
+
+        <div class="confirmation-address">
+            <span>DELIVERING TO</span>
+            <p>
+                {{ order.full_name }}<br>
+                {{ order.address_line_1 }}<br>
+                {% if order.address_line_2 %}
+                    {{ order.address_line_2 }}<br>
+                {% endif %}
+                {{ order.city }}, {{ order.state }} - {{ order.postal_code }}<br>
+                {{ order.country }}
+            </p>
+        </div>
+
+        <a href="{% url 'orders:history' %}" class="place-order-button">
+            View My Orders ↗
+        </a>
+
+        <a href="{% url 'store:home' %}" class="checkout-back-link">
+            Continue shopping
+        </a>
+    </div>
+</section>
+{% endblock %}

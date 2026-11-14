@@ -1,0 +1,60 @@
+<article class="product-card">
+
+    <a href="{% url 'store:product_detail' product.slug %}"
+       class="product-image">
+
+        {% if product.image %}
+            <img src="{{ product.image.url }}"
+                 alt="{{ product.name }}"
+                 loading="lazy">
+        {% else %}
+            <div class="product-placeholder">
+                <span>✳</span>
+                <small>GOOD THINGS INSIDE</small>
+            </div>
+        {% endif %}
+
+        {% if product.discount_percentage %}
+            <span class="discount-badge">
+                -{{ product.discount_percentage }}%
+            </span>
+        {% elif product.is_featured %}
+            <span class="product-tag">STAFF PICK</span>
+        {% endif %}
+
+        {% if not product.is_in_stock %}
+            <span class="stock-badge">SOLD OUT</span>
+        {% endif %}
+
+    </a>
+
+    <div class="product-info">
+
+        <span class="product-category">
+            {{ product.category.name }}
+        </span>
+
+        <a href="{% url 'store:product_detail' product.slug %}"
+           class="product-name">
+            {{ product.name }}
+        </a>
+
+        <div class="product-card-bottom">
+            <div class="product-pricing">
+                <strong>₹{{ product.price }}</strong>
+
+                {% if product.compare_at_price %}
+                    <del>₹{{ product.compare_at_price }}</del>
+                {% endif %}
+            </div>
+
+            <a href="{% url 'store:product_detail' product.slug %}"
+               class="product-arrow"
+               aria-label="View {{ product.name }}">
+                ↗
+            </a>
+        </div>
+
+    </div>
+
+</article>

@@ -1,0 +1,15 @@
+
+from django.urls import path
+from . import views
+
+app_name = "orders"
+
+urlpatterns = [
+    path("", views.order_history, name="history"),
+    path("checkout/", views.checkout, name="checkout"),
+    path(
+        "confirmation/<uuid:order_number>/",
+        views.order_confirmation,
+        name="confirmation",
+    ),
+]

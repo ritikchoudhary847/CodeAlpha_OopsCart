@@ -1,0 +1,112 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<section class="checkout-page">
+    <div class="checkout-heading">
+        <span>ALMOST YOURS</span>
+        <h1>Make it official.</h1>
+        <p>One last step before your questionable purchase becomes reality.</p>
+    </div>
+
+    <div class="checkout-layout">
+        <div class="checkout-form-panel">
+            <h2>Delivery details</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="checkout-errors">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="checkout-fields">
+                    {% for field in form %}
+                        <div class="checkout-field {% if field.name == 'address_line_1' or field.name == 'address_line_2' or field.name == 'customer_note' %}checkout-field-full{% endif %}">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {% for error in field.errors %}
+                                <small class="checkout-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="payment-method">
+                    <span>PAYMENT METHOD</span>
+                    <div>
+                        <strong>Cash on Delivery</strong>
+                        <small>Pay when your order arrives.</small>
+                    </div>
+                    <span class="cod-label">COD</span>
+                </div>
+
+                <button type="submit" class="place-order-button">
+                    Place My Order <span>↗</span>
+                </button>
+
+                <a href="{% url 'cart:detail' %}" class="checkout-back-link">
+                    ← Return to cart
+                </a>
+            </form>
+        </div>
+
+        <aside class="checkout-summary">
+            <span class="summary-eyebrow">YOUR QUESTIONABLE CHOICES</span>
+            <h2>Order summary</h2>
+
+            {% for item in cart_items %}
+                <div class="checkout-summary-item">
+                    <div>
+                        <strong>{{ item.product.name }}</strong>
+                        <small>Qty: {{ item.quantity }}</small>
+                    </div>
+                    <span>₹{{ item.subtotal|floatformat:2 }}</span>
+                </div>
+            {% endfor %}
+
+            <div class="checkout-summary-line">
+                <span>Subtotal</span>
+                <strong>₹{{ subtotal|floatformat:2 }}</strong>
+            </div>
+
+            <div class="checkout-summary-line">
+                <span>Shipping</span>
+                <strong>
+                    {% if shipping_fee == 0 %}
+                        FREE
+                    {% else %}
+                        ₹{{ shipping_fee|floatformat:2 }}
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="checkout-free-shipping">
+                {% if shipping_fee == 0 %}
+                    You've unlocked free shipping!
+                {% else %}
+                    Add ₹{{ remaining_for_free_shipping|floatformat:2 }}
+                    more for free shipping.
+                {% endif %}
+            </div>
+
+            <div class="checkout-total">
+                <span>Total payable</span>
+                <strong>₹{{ total|floatformat:2 }}</strong>
+            </div>
+
+            <p class="checkout-security-note">
+                ✳ Secure order processing. No online payment required.
+            </p>
+        </aside>
+    </div>
+</section>
+{% endblock %}
+<a href="{% url 'cart:detail' %}" class="checkout-back-link">
+    â†

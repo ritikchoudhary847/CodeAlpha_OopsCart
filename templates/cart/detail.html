@@ -1,0 +1,129 @@
+
+{% extends "base.html" %}
+
+{% block title %}Your Cart — OopsCart{% endblock %}
+
+{% block content %}
+<section class="cart-section">
+    <div class="cart-heading">
+        <span class="section-kicker">YOUR QUESTIONABLE DECISIONS</span>
+        <h1>Shopping <span>cart.</span></h1>
+        <p>{{ total_quantity }} item{{ total_quantity|pluralize }} in your cart</p>
+    </div>
+
+    {% if items %}
+        <div class="cart-layout">
+            <div class="cart-items">
+                {% for item in items %}
+                    <article class="cart-item">
+                        <div class="cart-item-image">
+                            {% if item.product.image %}
+                                <img
+                                    src="{{ item.product.image.url }}"
+                                    alt="{{ item.product.name }}"
+                                >
+                            {% else %}
+                                <span>O!</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="cart-item-info">
+                            <span class="section-kicker">
+                                {{ item.product.category.name }}
+                            </span>
+
+                            <h3>
+                                <a href="{% url 'store:product_detail' item.product.slug %}">
+                                    {{ item.product.name }}
+                                </a>
+                            </h3>
+
+                            <p>₹{{ item.product.price }} each</p>
+
+                            <div class="cart-item-actions">
+                                <form
+                                    method="POST"
+                                    action="{% url 'cart:update' item.id %}"
+                                >
+                                    {% csrf_token %}
+
+                                    <label for="quantity-{{ item.id }}">
+                                        Qty
+                                    </label>
+
+                                    <input
+                                        id="quantity-{{ item.id }}"
+                                        type="number"
+                                        name="quantity"
+                                        value="{{ item.quantity }}"
+                                        min="1"
+                                        max="{{ item.product.stock }}"
+                                        required
+                                    >
+
+                                    <button type="submit" class="text-action">
+                                        Update
+                                    </button>
+                                </form>
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'cart:remove' item.id %}"
+                                >
+                                    {% csrf_token %}
+
+                                    <button type="submit" class="remove-action">
+                                        Remove
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <strong class="cart-line-total">
+                            ₹{{ item.subtotal }}
+                        </strong>
+                    </article>
+                {% endfor %}
+            </div>
+
+            <aside class="cart-summary">
+                <span class="section-kicker">THE DAMAGE</span>
+                <h2>Order summary</h2>
+
+                <div class="summary-row">
+                    <span>Items</span>
+                    <span>{{ total_quantity }}</span>
+                </div>
+
+                <div class="summary-row summary-total">
+                    <span>Subtotal</span>
+                    <strong>₹{{ subtotal }}</strong>
+                </div>
+
+                <p class="summary-note">
+                    Shipping and final charges are calculated at checkout.
+                </p>
+
+                <a href="{% url 'orders:checkout' %}" class="place-order-button">
+                    Proceed to Checkout <span>↗</span>
+                </a>
+
+                <a href="{% url 'store:home' %}" class="continue-shopping">
+                    ← Continue shopping
+                </a>
+            </aside>
+        </div>
+
+    {% else %}
+        <div class="empty-cart">
+            <div class="empty-cart-icon">O!</div>
+            <h2>Your cart is suspiciously empty.</h2>
+            <p>Nothing questionable has been purchased yet. Let's fix that.</p>
+
+            <a href="{% url 'store:home' %}" class="place-order-button">
+                Explore Products <span>↗</span>
+            </a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

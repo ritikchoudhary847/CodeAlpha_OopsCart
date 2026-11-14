@@ -1,0 +1,124 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="product-page">
+    <div class="product-breadcrumb">
+        <a href="{% url 'store:home' %}">Home</a>
+        <span>/</span>
+        <span>{{ product.category.name }}</span>
+        <span>/</span>
+        <span>{{ product.name }}</span>
+    </div>
+
+    <div class="product-detail-layout">
+
+        <div class="product-visual">
+            {% if product.discount_percentage %}
+                <span class="product-sale-badge">
+                    -{{ product.discount_percentage }}%
+                </span>
+            {% endif %}
+
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <div class="product-image-placeholder">
+                    <span>✳</span>
+                    <small>GOOD THINGS INSIDE</small>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="product-information">
+            <span class="product-category-label">
+                {{ product.category.name }}
+            </span>
+
+            <h1>{{ product.name }}</h1>
+
+            <p class="product-description">
+                {{ product.description }}
+            </p>
+
+            <div class="product-pricing">
+                <span class="current-price">₹{{ product.price }}</span>
+
+                {% if product.compare_at_price and product.compare_at_price > product.price %}
+                    <span class="old-price">₹{{ product.compare_at_price }}</span>
+                    <span class="save-label">
+                        Save ₹{{ product.compare_at_price|floatformat:2 }}
+                    </span>
+                {% endif %}
+            </div>
+
+            {% if product.stock > 0 %}
+                <p class="stock-status in-stock">
+                    <span></span> In stock — {{ product.stock }} available
+                </p>
+
+                <form method="POST"
+                      action="{% url 'cart:add' product.id %}"
+                      class="product-cart-form">
+
+                    {% csrf_token %}
+
+                    <input type="hidden" name="next" value="{{ request.path }}">
+
+                    <label for="product-quantity">Quantity</label>
+
+                    <div class="product-cart-controls">
+                        <input
+                            type="number"
+                            id="product-quantity"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            max="{{ product.stock }}"
+                            required
+                        >
+
+                        <button type="submit" class="product-add-button">
+                            Add to Cart <span>↗</span>
+                        </button>
+                    </div>
+                </form>
+            {% else %}
+                <p class="stock-status out-stock">Currently out of stock</p>
+                <button class="product-add-button" disabled>
+                    Out of Stock
+                </button>
+            {% endif %}
+
+            <div class="product-trust-points">
+                <div><span>✳</span> Carefully questionable choices</div>
+                <div><span>↗</span> Free shipping above ₹999</div>
+                <div><span>♥</span> Made for your unnecessary needs</div>
+            </div>
+
+            <a href="{% url 'store:home' %}#shop" class="back-to-store">
+                ← Back to the store
+            </a>
+        </div>
+
+    </div>
+</section>
+
+{% if related_products %}
+<section class="related-products">
+    <div class="related-heading">
+        <span>MORE QUESTIONABLE DECISIONS</span>
+        <h2>You might also want these.</h2>
+    </div>
+
+    <div class="product-grid">
+        {% for product in related_products %}
+            {% include "store/partials/product_card.html" %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

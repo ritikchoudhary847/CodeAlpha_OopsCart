@@ -1,0 +1,50 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<section class="order-history-page">
+    <div class="checkout-heading">
+        <span>YOUR PURCHASE HISTORY</span>
+        <h1>All your decisions.</h1>
+        <p>Every questionable purchase, neatly documented.</p>
+    </div>
+
+    {% if orders %}
+        <div class="order-history-list">
+            {% for order in orders %}
+                <article class="order-history-card">
+                    <div>
+                        <span class="history-label">ORDER</span>
+                        <strong>#{{ order.order_number }}</strong>
+                        <small>{{ order.created_at|date:"d M Y, h:i A" }}</small>
+                    </div>
+
+                    <div>
+                        <span class="history-label">TOTAL</span>
+                        <strong>₹{{ order.total|floatformat:2 }}</strong>
+                    </div>
+
+                    <div>
+                        <span class="history-label">STATUS</span>
+                        <strong>{{ order.get_status_display }}</strong>
+                    </div>
+
+                    <div>
+                        <span class="history-label">PAYMENT</span>
+                        <strong>Cash on Delivery</strong>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-orders">
+            <span>✳</span>
+            <h2>No orders yet.</h2>
+            <p>Your questionable decisions are still waiting to happen.</p>
+            <a href="{% url 'store:home' %}" class="place-order-button">
+                Explore the store ↗
+            </a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

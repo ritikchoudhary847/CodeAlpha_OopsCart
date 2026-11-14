@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account — OopsCart{% endblock %}
+
+{% block content %}
+<section class="account-section">
+    <div class="account-card">
+        <span class="section-kicker">JOIN THE NONSENSE</span>
+        <h1>Create your <span>account.</span></h1>
+        <p class="account-subtitle">
+            Your next questionable purchase starts here.
+        </p>
+
+        <form method="POST" class="account-form">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+
+                    {% for error in field.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+
+                    {% if field.help_text %}
+                        <small class="field-help">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+                <div class="form-error">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <button type="submit" class="primary-button account-submit">
+                Create Account →
+            </button>
+        </form>
+
+        <p class="account-switch">
+            Already have an account?
+            <a href="{% url 'accounts:login' %}">Log in</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

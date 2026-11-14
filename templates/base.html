@@ -1,0 +1,189 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#151515">
+    <meta name="description" content="OopsCart — Discover unexpectedly delightful products at surprisingly good prices.">
+
+    <title>{% block title %}OopsCart — Buy Things. Regret Later.{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/accounts-cart.css' %}">
+    <link rel="stylesheet" href="{% static 'css/premium.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <div class="announcement-bar">
+        <span class="announcement-message">
+            <span class="announcement-sparkle">✦</span>
+            FREE SHIPPING ON ORDERS ABOVE ₹999
+        </span>
+        <span class="announcement-divider"></span>
+        <span class="announcement-secondary">
+            QUESTIONABLE PURCHASES. EXCELLENT VIBES.
+        </span>
+    </div>
+
+    <header class="site-header">
+        <div class="nav-container">
+
+            <a href="{% url 'store:home' %}" class="brand" aria-label="OopsCart home">
+                <span class="brand-mark">O!</span>
+                <span class="brand-name">
+                    oops<span class="brand-highlight">cart</span><span class="brand-dot">.</span>
+                </span>
+            </a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="{% url 'store:home' %}" class="nav-link">Home</a>
+                <a href="{% url 'store:home' %}#shop" class="nav-link">Shop</a>
+                <a href="{% url 'store:home' %}#about" class="nav-link">Our Story</a>
+            </nav>
+
+            <div class="nav-actions">
+
+                <a href="{% url 'cart:detail' %}" class="nav-cart-link">
+                    <span class="nav-cart-icon" aria-hidden="true">🛍</span>
+                    <span>Cart</span>
+                    <span class="cart-count">{{ cart_count|default:0 }}</span>
+                </a>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:profile' %}" class="nav-account-link">
+                        My Account
+                    </a>
+
+                    <form method="POST" action="{% url 'accounts:logout' %}" class="nav-logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-logout-button">
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="nav-login-link">
+                        Login
+                    </a>
+                    <a href="{% url 'accounts:register' %}" class="nav-join-button">
+                        Join Us <span aria-hidden="true">↗</span>
+                    </a>
+                {% endif %}
+
+            </div>
+
+            <button
+                class="mobile-menu-button"
+                id="mobileMenuButton"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-controls="mobileNav"
+                aria-expanded="false"
+            >
+                <span class="menu-icon" aria-hidden="true">☰</span>
+            </button>
+
+        </div>
+
+        <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" aria-hidden="true">
+
+            <a href="{% url 'store:home' %}">Home</a>
+            <a href="{% url 'store:home' %}#shop">Shop</a>
+            <a href="{% url 'store:home' %}#about">Our Story</a>
+
+            <div class="mobile-nav-divider"></div>
+
+            <a href="{% url 'cart:detail' %}" class="mobile-cart-link">
+                My Cart <span>{{ cart_count|default:0 }} items</span>
+            </a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:profile' %}">My Account</a>
+
+                <form method="POST" action="{% url 'accounts:logout' %}" class="mobile-logout-form">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'accounts:login' %}">Login</a>
+                <a href="{% url 'accounts:register' %}" class="mobile-join-link">Create Account ↗</a>
+            {% endif %}
+
+        </nav>
+    </header>
+
+    <main id="main-content">
+
+        {% if messages %}
+            <div class="site-messages" aria-live="polite">
+                {% for message in messages %}
+                    <div class="site-message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <footer class="site-footer" id="about">
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+                <a href="{% url 'store:home' %}" class="brand footer-logo">
+                    <span class="brand-mark">O!</span>
+                    <span class="brand-name">
+                        oops<span class="brand-highlight">cart</span><span class="brand-dot">.</span>
+                    </span>
+                </a>
+
+                <p>
+                    We sell things you didn't know you needed.
+                    Your wallet may disagree.
+                </p>
+
+                <span class="footer-brand-note">
+                    DISCOVER SOMETHING UNEXPECTED.
+                </span>
+            </div>
+
+            <div class="footer-column">
+                <h4>THE STORE</h4>
+                <a href="{% url 'store:home' %}">Home</a>
+                <a href="{% url 'store:home' %}#shop">All Products</a>
+                <a href="{% url 'cart:detail' %}">Shopping Cart</a>
+            </div>
+
+            <div class="footer-column">
+                <h4>THE PHILOSOPHY</h4>
+                <p>Life is short. Buy the weird thing.</p>
+                <p>Shop responsibly. Laugh irresponsibly.</p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 OopsCart. All questionable rights reserved.</span>
+            <span>Made with questionable decisions. <span class="footer-heart">♡</span></span>
+        </div>
+
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>
