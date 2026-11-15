@@ -1,48 +1,70 @@
-﻿# OopsCart â€” Modern Django E-Commerce Platform
+# OopsCart | Full-Stack Django E-Commerce Platform
 
-OopsCart is a full-stack e-commerce web application built with Django, Python, HTML, CSS and JavaScript. It provides a complete shopping workflow, including product discovery, user authentication, shopping cart management and order placement.
+A modern, responsive e-commerce web application built with **Python, Django, HTML, CSS, JavaScript, and SQLite**.
 
-## Features
+OopsCart provides an end-to-end shopping experience, from product discovery and cart management to checkout and order tracking. It also includes user authentication, inventory validation, and an administrative interface.
+
+---
+
+## Project Overview
+
+OopsCart is designed to demonstrate practical full-stack web development through a complete e-commerce workflow.
+
+Users can browse products, search and filter the catalogue, manage shopping carts, and place orders using Cash on Delivery. The application also supports guest shopping and automatically merges guest cart items after login.
+
+## Key Features
 
 ### User Authentication
-- User registration and login
-- Secure password validation
+- User registration, login, and logout
+- Password validation
 - User profile management
 - Profile avatar uploads
 - Guest cart merging after login
 
 ### Product Catalogue
-- Product categories
-- Product detail pages
-- Product search
-- Category-based filtering
-- Price and name sorting
-- Featured products
-- Product stock management
+- Product categories and featured products
+- Product search and category filtering
+- Price and name-based sorting
+- Detailed product pages
+- Product inventory management
 - Product image validation
 
 ### Shopping Cart
-- Add products to cart
-- Update item quantities
-- Remove cart items
-- Guest and authenticated shopping carts
+- Add and remove products
+- Update product quantities
+- Automatic cart calculations
+- Guest and authenticated user carts
 - Stock-aware quantity validation
-- Automatic cart summary
 
-### Order Management
-- Checkout with customer details
-- Cash on Delivery payment option
-- Order confirmation
-- Order history
+### Checkout and Order Management
+- Customer and delivery details
+- Cash on Delivery (COD)
+- Order confirmation and order history
 - Order and item snapshots
-- Stock deduction after successful order placement
+- Automatic stock deduction after successful order placement
 - Transaction-based order processing
 
-### Administration
-- Django admin integration
+### Admin Dashboard
+- Django Admin integration
 - Product and category management
 - Inventory management
 - Order management
+
+---
+
+## Screenshots
+
+Add your actual application screenshots to `docs/screenshots/` using the filenames below.
+
+| Homepage | Product Discovery |
+|---|---|
+| ![OopsCart Homepage](docs/screenshots/homepage.png) | ![Product Discovery](docs/screenshots/product-search.png) |
+
+| Shopping Cart |
+|---|
+| ![Shopping Cart](docs/screenshots/shopping-cart.png) |
+
+---
 
 ## Technology Stack
 
@@ -50,32 +72,30 @@ OopsCart is a full-stack e-commerce web application built with Django, Python, H
 |---|---|
 | Python | Backend programming |
 | Django | Web framework |
-| SQLite | Database |
+| SQLite | Relational database |
 | HTML5 | Page structure |
 | CSS3 | Styling and responsive layouts |
 | JavaScript | Frontend interactions |
 | Pillow | Image processing |
+| Git & GitHub | Version control |
 
-## Project Structure
+---
 
-```text
-OopsCart/
-â”‚
-â”œâ”€â”€ accounts/          # Authentication and user profiles
-â”œâ”€â”€ cart/              # Shopping cart functionality
-â”œâ”€â”€ config/            # Django project configuration
-â”œâ”€â”€ media/             # User-uploaded media (not committed)
-â”œâ”€â”€ orders/            # Checkout and order management
-â”œâ”€â”€ static/            # CSS, JavaScript and static assets
-â”œâ”€â”€ store/             # Products, categories and catalogue
-â”œâ”€â”€ templates/         # Django HTML templates
-â”‚
-â”œâ”€â”€ .env.example       # Environment variable reference
-â”œâ”€â”€ .gitignore
-â”œâ”€â”€ manage.py
-â”œâ”€â”€ requirements.txt
-â””â”€â”€ README.md
-```
+## Application Architecture
+
+The application follows Django's modular project structure.
+
+- `accounts/` - Authentication and user profiles
+- `store/` - Product catalogue and categories
+- `cart/` - Shopping cart functionality
+- `orders/` - Checkout and order management
+- `config/` - Django project configuration
+- `templates/` - HTML templates
+- `static/` - CSS, JavaScript, and static assets
+- `media/` - Uploaded media files
+- `manage.py` - Django management utility
+
+---
 
 ## Installation and Setup
 
@@ -83,16 +103,19 @@ OopsCart/
 
 ```bash
 git clone https://github.com/ritikchoudhary847/CodeAlpha_OopsCart.git
-cd OopsCart
+cd CodeAlpha_OopsCart
 ```
 
 ### 2. Create a virtual environment
 
-Windows:
-
 ```powershell
 python -m venv venv
-venv\Scripts\activate
+```
+
+Activate it on Windows PowerShell:
+
+```powershell
+.\venv\Scripts\Activate.ps1
 ```
 
 ### 3. Install dependencies
@@ -113,41 +136,56 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-### 6. Populate the product catalogue
+### 6. Add sample products
 
 ```powershell
 python manage.py seed_products
 ```
 
-To populate products without downloading images:
+To skip product image downloads:
 
 ```powershell
 python manage.py seed_products --skip-images
 ```
 
-### 7. Start the development server
+### 7. Run the development server
 
 ```powershell
 python manage.py runserver
 ```
 
-Open:
+Open the application:
 
-```text
-http://127.0.0.1:8000/
-```
+**http://127.0.0.1:8000/**
+
+Open the Django administration panel:
+
+**http://127.0.0.1:8000/admin/**
+
+---
 
 ## Environment Configuration
 
-Refer to `.env.example` for the production environment variable names.
+The repository includes an `.env.example` file documenting production environment variable names.
 
-Configure the actual environment variables through your hosting provider. The example file is a reference and is not automatically loaded by the current Django settings.
+The example file is a reference and is not automatically loaded by the current Django settings. Configure the required environment variables through your deployment environment.
 
-Never commit production secret keys, private environment files or user-uploaded media.
+Never commit production secret keys, private environment files, database credentials, or user-uploaded media.
+
+---
 
 ## Testing
 
-Run the complete Django test suite:
+The project has passed **49 automated Django tests** in the development environment.
+
+The test suite covers the following applications:
+
+- Accounts
+- Store
+- Cart
+- Orders
+
+Run the complete test suite:
 
 ```powershell
 python manage.py test
@@ -159,38 +197,47 @@ Run Django system checks:
 python manage.py check
 ```
 
-Check deployment security configuration:
+Check deployment security settings:
 
 ```powershell
 python manage.py check --deploy
 ```
 
-## Security Considerations
+---
+
+## Security and Validation
 
 - Django authentication and password validation
 - CSRF protection
-- Secure session cookie configuration in production
-- Product and avatar image validation
 - Server-side stock validation
-- Ownership checks for customer orders
+- Product and profile image validation
+- Order ownership checks
+- Transaction-based order processing
 - Environment-based production secrets
-- Production HTTPS security settings
-
-## Project Status
-
-The project has passed **49 automated Django tests** in the development environment.
-
-The test suite covers the accounts, store, cart and orders applications.
-
-## Developer
-
-Developed as part of the CodeAlpha Full Stack Development Internship.
-
-**Project:** OopsCart  
-**Domain:** Full Stack Web Development  
-**Backend:** Python and Django
+- Production HTTPS and secure-cookie configuration
 
 ---
 
-*OopsCart â€” A complete shopping experience built with Django.*
+## Current Project Scope
 
+- Payment method: Cash on Delivery
+- Database: SQLite
+- Framework: Django
+- Application status: Developed and tested locally
+
+Online payment gateway integration and production deployment are not currently included.
+
+---
+
+## Developer
+
+**Developed as part of the CodeAlpha Full Stack Development Internship.**
+
+**Project:** OopsCart  
+**Domain:** Full Stack Web Development  
+**Backend:** Python and Django  
+**Repository:** [CodeAlpha_OopsCart](https://github.com/ritikchoudhary847/CodeAlpha_OopsCart)
+
+---
+
+*OopsCart - Bringing product discovery, shopping cart management, and order processing together in one Django application.*
